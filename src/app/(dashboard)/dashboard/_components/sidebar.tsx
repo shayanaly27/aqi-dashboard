@@ -20,15 +20,15 @@ import {
 } from "lucide-react";
 
 const NAV_ITEMS = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutGrid },
-  { label: "Forecast", href: "#", icon: CloudSun },
-  { label: "Map view", href: "#", icon: Map },
-  { label: "Pollutants", href: "#", icon: Droplets },
-  { label: "Analytics", href: "#", icon: BarChart3 },
-  { label: "Model insights", href: "#", icon: BrainCircuit },
-  { label: "Alerts", href: "#", icon: Bell },
-  { label: "Reports", href: "#", icon: FileText },
-  { label: "Settings", href: "#", icon: Settings },
+  { label: "Dashboard", href: "/dashboard", icon: LayoutGrid, disabled: false },
+  { label: "Forecast", href: "#", icon: CloudSun, disabled: true },
+  { label: "Map view", href: "#", icon: Map, disabled: true },
+  { label: "Pollutants", href: "#", icon: Droplets, disabled: true },
+  { label: "Analytics", href: "#", icon: BarChart3, disabled: true },
+  { label: "Model insights", href: "#", icon: BrainCircuit, disabled: true },
+  { label: "Alerts", href: "#", icon: Bell, disabled: true },
+  { label: "Reports", href: "#", icon: FileText, disabled: true },
+  { label: "Settings", href: "#", icon: Settings, disabled: true },
 ];
 
 interface SidebarProps {
@@ -41,7 +41,6 @@ function SidebarContent({ userName = "Shayan Ali", userRole = "Analyst" }: Sideb
 
   return (
     <div className="flex h-full flex-col overflow-y-auto bg-slate-950 px-4 py-5">
-      {/* Logo */}
       <div className="mb-6 flex items-center gap-3 px-2">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-blue-600">
           <CloudSun className="h-5 w-5 text-white" />
@@ -52,10 +51,23 @@ function SidebarContent({ userName = "Shayan Ali", userRole = "Analyst" }: Sideb
         </div>
       </div>
 
-      {/* Nav */}
       <nav className="flex-1 space-y-1">
-        {NAV_ITEMS.map(({ label, href, icon: Icon }) => {
+        {NAV_ITEMS.map(({ label, href, icon: Icon, disabled }) => {
           const active = href !== "#" && pathname?.startsWith(href);
+
+          if (disabled) {
+            return (
+              <div
+                key={label}
+                title="Coming soon"
+                className="flex cursor-not-allowed items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-600"
+              >
+                <Icon className="h-4 w-4 shrink-0" />
+                {label}
+              </div>
+            );
+          }
+
           return (
             <Link
               key={label}
@@ -73,7 +85,6 @@ function SidebarContent({ userName = "Shayan Ali", userRole = "Analyst" }: Sideb
         })}
       </nav>
 
-      {/* Air quality tip */}
       <div className="mt-4 rounded-xl bg-emerald-900/30 p-4">
         <div className="mb-1 flex items-center gap-2">
           <Leaf className="h-4 w-4 text-emerald-400" />
@@ -84,7 +95,6 @@ function SidebarContent({ userName = "Shayan Ali", userRole = "Analyst" }: Sideb
         </p>
       </div>
 
-      {/* User */}
       <button
         type="button"
         className="mt-4 flex items-center gap-3 rounded-lg px-2 py-2 text-left hover:bg-slate-800"
@@ -106,19 +116,11 @@ function SidebarContent({ userName = "Shayan Ali", userRole = "Analyst" }: Sideb
   );
 }
 
-/** Fixed to the viewport on desktop (lg+) - stays pinned in place while
- * the main content scrolls independently, with its own internal scroll
- * if the nav list ever grows too tall for the viewport. On mobile it's
- * an off-canvas drawer toggled by the hamburger button. Because the
- * desktop version is `fixed` (taken out of normal flex flow), the page
- * layout needs `lg:pl-64` on its main content wrapper to avoid the
- * sidebar overlapping it - see page.tsx. */
 export default function Sidebar(props: SidebarProps) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      {/* Mobile top bar with hamburger - only shows below lg */}
       <div className="flex items-center gap-3 border-b border-slate-800 bg-slate-950 px-4 py-3 lg:hidden">
         <button
           type="button"
@@ -131,12 +133,10 @@ export default function Sidebar(props: SidebarProps) {
         <p className="text-sm font-semibold text-white">Karachi AQI predictor</p>
       </div>
 
-      {/* Desktop sidebar - fixed to viewport, not part of page scroll flow */}
       <aside className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-30 lg:block lg:w-64 lg:border-r lg:border-slate-800">
         <SidebarContent {...props} />
       </aside>
 
-      {/* Mobile drawer - overlay + slide-in panel */}
       <div
         className={`fixed inset-0 z-40 lg:hidden ${open ? "" : "pointer-events-none"}`}
         aria-hidden={!open}

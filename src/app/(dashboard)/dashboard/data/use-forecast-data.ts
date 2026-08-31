@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { PollutantReading } from "../_components/key-pollutants";
 import type { ForecastPoint } from "../_components/forecast-strip";
 import { deriveStatus } from "../_components/key-pollutants";
+import { API_BASE } from "../lib/api-config";
 
 /* ─────────────────────────────────────────────────────────
    Shape of the JSON returned by FastAPI's /predict endpoint.
@@ -59,7 +60,7 @@ export function useForecastData() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/predict")
+    fetch(`${API_BASE}/predict`)
       .then((res) => {
         if (!res.ok) throw new Error("API returned an error");
         return res.json();

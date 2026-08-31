@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Trophy } from "lucide-react";
-
-const API_BASE = "http://127.0.0.1:8000";
+import { API_BASE } from "../lib/api-config";
 
 interface ModelMetric {
   name: string;
@@ -36,7 +35,6 @@ export default function BestModel() {
         return res.json();
       })
       .then((json: ModelMetricsResponse) => {
-        // "today" = the 24h-ahead (day_1) horizon, the nearest-term forecast
         const horizon = json.day_1;
         const bestModel = horizon.models.find((m) => m.name === horizon.best_model);
         setBest(bestModel ?? horizon.models[0]);

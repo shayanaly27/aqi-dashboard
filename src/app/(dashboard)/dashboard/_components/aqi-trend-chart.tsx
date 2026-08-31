@@ -10,8 +10,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-
-const API_BASE = "http://127.0.0.1:8000";
+import { API_BASE } from "../lib/api-config";
 
 export interface TrendPoint {
   label: string;
@@ -20,7 +19,6 @@ export interface TrendPoint {
 
 interface HistoryApiResponse {
   days: number;
-  granularity: string;
   history: { date: string; aqi: number }[];
 }
 
@@ -30,7 +28,7 @@ function formatDailyLabel(dateStr: string): string {
 }
 
 async function fetchHistory(days: number): Promise<TrendPoint[]> {
-  const res = await fetch(`${API_BASE}/history?days=${days}&granularity=daily`);
+  const res = await fetch(`${API_BASE}/history?days=${days}`);
   if (!res.ok) throw new Error("Failed to load AQI history");
   const json: HistoryApiResponse = await res.json();
   return json.history.map((p) => ({

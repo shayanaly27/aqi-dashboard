@@ -11,6 +11,7 @@ import PollutantBreakdown from "./_components/pollutant-breakdown";
 import ShapFeatureImportance from "./_components/shap-feature-importance";
 import BestModel from "./_components/best-model";
 import ModelComparisonTable from "./_components/model-comparison-table";
+import ModelVersionHistory from "./_components/model-version-history";
 import DashboardSkeleton from "./_components/dashboard-skeleton";
 import { useForecastData } from "./data/use-forecast-data";
 
@@ -21,8 +22,6 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-slate-950">
       <Sidebar />
 
-      {/* lg:pl-64 matches the sidebar's fixed width (w-64) now that
-          it's position: fixed and no longer part of the flex flow */}
       <div className="lg:pl-64">
         <Header
           location="Karachi, Pakistan"
@@ -66,6 +65,7 @@ export default function DashboardPage() {
               </div>
 
               <ModelComparisonTable />
+              <ModelVersionHistory />
             </>
           )}
         </main>

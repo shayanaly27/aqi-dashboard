@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Star } from "lucide-react";
-
-const API_BASE = "http://127.0.0.1:8000";
+import { API_BASE } from "../lib/api-config";
 
 interface ModelMetric {
   name: string;
@@ -45,7 +44,6 @@ function buildRows(data: ModelMetricsResponse): ModelRow[] {
     };
   });
 
-  // lowest 24h RMSE first, so the best model naturally leads the table
   return rows.sort((a, b) => a.h24.rmse - b.h24.rmse);
 }
 

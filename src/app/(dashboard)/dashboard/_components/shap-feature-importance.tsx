@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { displayForFeature } from "../data/feature-display";
-
-const API_BASE = "http://127.0.0.1:8000";
+import { API_BASE } from "../lib/api-config";
 
 interface RawFeature {
   feature: string;
@@ -68,8 +67,6 @@ export default function ShapFeatureImportance() {
           })}
         </div>
       )}
-
-     
     </div>
   );
 }

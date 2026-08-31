@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { displayForFeature } from "../data/feature-display";
-
-const API_BASE = "http://127.0.0.1:8000";
+import { API_BASE } from "../lib/api-config";
 
 interface RawFeature {
   feature: string;
@@ -20,9 +19,6 @@ interface PrimaryFactorsProps {
   maxItems?: number;
 }
 
-/* Per-factor accent color, keyed by the display label from
-   displayForFeature. Falls back to a neutral slate if a feature
-   isn't in the map, so new/unknown features never break styling. */
 const FACTOR_COLORS: Record<string, { iconBg: string; iconText: string; bar: string }> = {
   "PM2.5": {
     iconBg: "bg-indigo-500/20",
