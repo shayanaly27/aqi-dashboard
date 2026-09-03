@@ -35,7 +35,8 @@ interface SidebarProps {
 function SidebarContent({
   userName = "Shayan Ali",
   userRole = "Analyst",
-}: SidebarProps) {
+  onNavigate,
+}: SidebarProps & { onNavigate?: () => void }) {
   const pathname = usePathname();
 
   return (
@@ -75,6 +76,7 @@ function SidebarContent({
             <Link
               key={href + label}
               href={href}
+              onClick={onNavigate}
               className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
                 active
                   ? "bg-blue-600 font-medium text-white"
@@ -171,7 +173,7 @@ export default function Sidebar(props: SidebarProps) {
             >
               <X className="h-5 w-5" />
             </button>
-            <SidebarContent {...props} />
+            <SidebarContent {...props} onNavigate={() => setOpen(false)} />
           </div>
         </div>
       </div>
