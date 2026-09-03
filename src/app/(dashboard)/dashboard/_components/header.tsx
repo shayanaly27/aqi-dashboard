@@ -1,13 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { MapPin, Search, Bell, Sun } from "lucide-react";
+import { MapPin, Search, Bell, Sun, RefreshCw } from "lucide-react";
 
 interface HeaderProps {
   location?: string;
   lastUpdated?: string;
   onSearch?: (query: string) => void;
   notificationCount?: number;
+  onRefresh?: () => void;
+  refreshing?: boolean;
 }
 
 export default function Header({
@@ -15,12 +17,13 @@ export default function Header({
   lastUpdated,
   onSearch,
   notificationCount = 0,
+  onRefresh,
+  refreshing = false,
 }: HeaderProps) {
   return (
     <div className="px-4 pt-4 ">
     <header className="sticky top-0 z-40 bg-gradient-to-r from-slate-950 rounded-xl via-slate-900 to-blue-950 px-6 py-4 shadow-sm">
       <div className="flex items-center justify-between gap-4">
-        {/* Location + last updated */}
         <div className="flex items-center gap-2.5 shrink-0">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10">
             <MapPin className="h-4 w-4 text-sky-300" strokeWidth={2} />
@@ -33,7 +36,6 @@ export default function Header({
           </div>
         </div>
 
-        {/* Search */}
         <div className="hidden flex-1 max-w-md sm:block">
           <div className="relative">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -46,8 +48,20 @@ export default function Header({
           </div>
         </div>
 
-        {/* Utility icons */}
         <div className="flex items-center gap-2 shrink-0">
+          {onRefresh && (
+            <button
+              onClick={onRefresh}
+              disabled={refreshing}
+              className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} strokeWidth={2} />
+              <span className="hidden sm:inline">
+                {refreshing ? "Fetching…" : "Fetch Latest Data"}
+              </span>
+            </button>
+          )}
+
           <button
             aria-label="Notifications"
             className="relative flex h-9 w-9 items-center justify-center rounded-full text-slate-300 transition hover:bg-white/10"

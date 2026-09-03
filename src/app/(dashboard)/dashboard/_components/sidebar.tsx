@@ -21,14 +21,10 @@ import {
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutGrid, disabled: false },
-  { label: "Forecast", href: "#", icon: CloudSun, disabled: true },
-  { label: "Map view", href: "#", icon: Map, disabled: true },
-  { label: "Pollutants", href: "#", icon: Droplets, disabled: true },
-  { label: "Analytics", href: "#", icon: BarChart3, disabled: true },
-  { label: "Model insights", href: "#", icon: BrainCircuit, disabled: true },
-  { label: "Alerts", href: "#", icon: Bell, disabled: true },
-  { label: "Reports", href: "#", icon: FileText, disabled: true },
-  { label: "Settings", href: "#", icon: Settings, disabled: true },
+  { label: "Analytics", href: "/insights", icon: BarChart3, disabled: false },
+  { label: "Report", href: "/reports", icon: Bell, disabled: false },
+  { label: "Alerts", href: "/alerts", icon: Bell, disabled: false },
+  { label: "Settings", href: "/settings", icon: Settings, disabled: false },
 ];
 
 interface SidebarProps {
@@ -36,7 +32,10 @@ interface SidebarProps {
   userRole?: string;
 }
 
-function SidebarContent({ userName = "Shayan Ali", userRole = "Analyst" }: SidebarProps) {
+function SidebarContent({
+  userName = "Shayan Ali",
+  userRole = "Analyst",
+}: SidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -46,8 +45,12 @@ function SidebarContent({ userName = "Shayan Ali", userRole = "Analyst" }: Sideb
           <CloudSun className="h-5 w-5 text-white" />
         </div>
         <div className="min-w-0">
-          <p className="truncate text-sm font-semibold text-white">Karachi AQI predictor</p>
-          <p className="truncate text-xs text-slate-400">AI-powered air quality forecast</p>
+          <p className="truncate text-sm font-semibold text-white">
+            Karachi AQI predictor
+          </p>
+          <p className="truncate text-xs text-slate-400">
+            AI-powered air quality forecast
+          </p>
         </div>
       </div>
 
@@ -58,7 +61,7 @@ function SidebarContent({ userName = "Shayan Ali", userRole = "Analyst" }: Sideb
           if (disabled) {
             return (
               <div
-                key={label}
+                key={href + label}
                 title="Coming soon"
                 className="flex cursor-not-allowed items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-600"
               >
@@ -70,7 +73,7 @@ function SidebarContent({ userName = "Shayan Ali", userRole = "Analyst" }: Sideb
 
           return (
             <Link
-              key={label}
+              key={href + label}
               href={href}
               className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
                 active
@@ -88,10 +91,13 @@ function SidebarContent({ userName = "Shayan Ali", userRole = "Analyst" }: Sideb
       <div className="mt-4 rounded-xl bg-emerald-900/30 p-4">
         <div className="mb-1 flex items-center gap-2">
           <Leaf className="h-4 w-4 text-emerald-400" />
-          <p className="text-sm font-medium text-emerald-300">Air quality tip</p>
+          <p className="text-sm font-medium text-emerald-300">
+            Air quality tip
+          </p>
         </div>
         <p className="text-xs leading-relaxed text-slate-400">
-          Avoid outdoor activities in the morning. Air quality improves in the afternoon.
+          Avoid outdoor activities in the morning. Air quality improves in the
+          afternoon.
         </p>
       </div>
 
@@ -107,7 +113,9 @@ function SidebarContent({ userName = "Shayan Ali", userRole = "Analyst" }: Sideb
             .slice(0, 2)}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium text-slate-200">{userName}</p>
+          <p className="truncate text-sm font-medium text-slate-200">
+            {userName}
+          </p>
           <p className="truncate text-xs text-slate-500">{userRole}</p>
         </div>
         <ChevronDown className="h-4 w-4 shrink-0 text-slate-500" />
@@ -130,7 +138,9 @@ export default function Sidebar(props: SidebarProps) {
         >
           <Menu className="h-5 w-5" />
         </button>
-        <p className="text-sm font-semibold text-white">Karachi AQI predictor</p>
+        <p className="text-sm font-semibold text-white">
+          Karachi AQI predictor
+        </p>
       </div>
 
       <aside className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-30 lg:block lg:w-64 lg:border-r lg:border-slate-800">
