@@ -22,7 +22,7 @@ export default function Header({
 }: HeaderProps) {
   return (
     <div className="px-4 pt-4 ">
-    <header className="sticky top-0 z-40 bg-gradient-to-r from-slate-950 rounded-xl via-slate-900 to-blue-950 px-6 py-4 shadow-sm">
+    <header className="sticky top-0 z-10 bg-gradient-to-r from-slate-950 rounded-xl via-slate-900 to-blue-950 px-6 py-4 shadow-sm">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-2.5 shrink-0">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10">
@@ -74,12 +74,7 @@ export default function Header({
             )}
           </button>
 
-          <button
-            aria-label="Toggle theme"
-            className="flex h-9 w-9 items-center justify-center rounded-full text-slate-300 transition hover:bg-white/10"
-          >
-            <Sun className="h-[18px] w-[18px]" strokeWidth={1.8} />
-          </button>
+          
         </div>
       </div>
     </header>
