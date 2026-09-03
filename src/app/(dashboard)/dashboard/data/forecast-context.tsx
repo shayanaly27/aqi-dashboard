@@ -56,9 +56,10 @@ const ForecastContext = createContext<ForecastContextValue | null>(null);
 /**
  * Fetches /predict ONCE when the app first mounts. Because this provider
  * lives in the (dashboard) layout (not inside individual pages), it
- * survives client-side navigation between /dashboard and /insights - so
- * switching pages no longer triggers a refetch. Call refresh() from a
- * button to manually pull fresh data on demand.
+ * survives client-side navigation between /dashboard, /insights, /alerts,
+ * etc. - so switching pages no longer triggers a refetch. Call refresh()
+ * from a button to bypass the backend's cache and pull genuinely fresh
+ * data on demand.
  */
 export function ForecastProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<ForecastResponse | null>(null);
@@ -72,7 +73,10 @@ export function ForecastProvider({ children }: { children: ReactNode }) {
     else setLoading(true);
     setError(null);
 
-    fetch(`${API_BASE}/predict`)
+    // isRefresh=true passes ?refresh=true so the backend bypasses its
+    // in-memory cache and pulls a genuinely fresh forecast, instead of
+    // returning the same cached response the button would otherwise get.
+    fetch(`${API_BASE}/predict${isRefresh ? "?refresh=true" : ""}`)
       .then((res) => {
         if (!res.ok) throw new Error("API returned an error");
         return res.json();
