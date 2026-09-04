@@ -37,7 +37,7 @@ export interface ForecastResponse {
 }
 
 /** Turns a forecast offset into the elapsed-time label shown in the strip. */
-function dayLabelForOffset(baseTimestamp: string, offsetDays: number): string {
+function dayLabelForOffset(offsetDays: number): string {
   if (offsetDays === 0) return "Today";
   return `${offsetDays * 24} Hours`;
 }
@@ -80,25 +80,25 @@ export function useForecastData() {
   const forecastPoints: ForecastPoint[] = data
     ? [
         {
-          dayLabel: dayLabelForOffset(data.based_on_timestamp, 0),
+          dayLabel: dayLabelForOffset(0),
           aqi: data.current_aqi,
           category: data.current_category,
           isHazardous: false,
         },
         {
-          dayLabel: dayLabelForOffset(data.based_on_timestamp, 1),
+          dayLabel: dayLabelForOffset(1),
           aqi: data.forecast.day_1.predicted_aqi,
           category: data.forecast.day_1.category,
           isHazardous: data.forecast.day_1.is_hazardous,
         },
         {
-          dayLabel: dayLabelForOffset(data.based_on_timestamp, 2),
+          dayLabel: dayLabelForOffset(2),
           aqi: data.forecast.day_2.predicted_aqi,
           category: data.forecast.day_2.category,
           isHazardous: data.forecast.day_2.is_hazardous,
         },
         {
-          dayLabel: dayLabelForOffset(data.based_on_timestamp, 3),
+          dayLabel: dayLabelForOffset(3),
           aqi: data.forecast.day_3.predicted_aqi,
           category: data.forecast.day_3.category,
           isHazardous: data.forecast.day_3.is_hazardous,
