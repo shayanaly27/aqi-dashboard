@@ -33,11 +33,7 @@ export interface ForecastResponse {
 
 function dayLabelForOffset(baseTimestamp: string, offsetDays: number): string {
   if (offsetDays === 0) return "Today";
-  if (offsetDays === 1) return "Tomorrow";
-  const base = new Date(baseTimestamp);
-  const target = new Date(base);
-  target.setDate(base.getDate() + offsetDays);
-  return target.toLocaleDateString(undefined, { weekday: "long" });
+  return `${offsetDays * 24} Hours`;
 }
 
 interface ForecastContextValue {

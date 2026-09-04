@@ -36,19 +36,10 @@ export interface ForecastResponse {
   };
 }
 
-/** Turns based_on_timestamp + an offset into a real weekday label:
- * +1 day -> "Tomorrow", +2/+3 days -> actual weekday name ("Tuesday",
- * "Wednesday", etc.) computed from the real forecast date, not
- * hardcoded - so this stays correct no matter what day it's viewed. */
+/** Turns a forecast offset into the elapsed-time label shown in the strip. */
 function dayLabelForOffset(baseTimestamp: string, offsetDays: number): string {
   if (offsetDays === 0) return "Today";
-  if (offsetDays === 1) return "Tomorrow";
-
-  const base = new Date(baseTimestamp);
-  const target = new Date(base);
-  target.setDate(base.getDate() + offsetDays);
-
-  return target.toLocaleDateString(undefined, { weekday: "long" });
+  return `${offsetDays * 24} Hours`;
 }
 
 /** Fetches /predict once on mount and derives the two view-shapes
