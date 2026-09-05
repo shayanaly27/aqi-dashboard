@@ -36,10 +36,17 @@ export interface ForecastResponse {
   };
 }
 
-/** Turns a forecast offset into the elapsed-time label shown in the strip. */
-function dayLabelForOffset(offsetDays: number): string {
-  if (offsetDays === 0) return "Today";
-  return `${offsetDays * 24} Hours`;
+const FORECAST_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  timeZone: "UTC",
+});
+
+function dayLabelForOffset(timestamp: string, offsetDays: number): string {
+  const hasTimezone = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(timestamp);
+  const date = new Date(hasTimezone ? timestamp : `${timestamp}Z`);
+  date.setUTCDate(date.getUTCDate() + offsetDays);
+  return FORECAST_DATE_FORMATTER.format(date);
 }
 
 /** Fetches /predict once on mount and derives the two view-shapes
@@ -80,25 +87,22 @@ export function useForecastData() {
   const forecastPoints: ForecastPoint[] = data
     ? [
         {
-          dayLabel: dayLabelForOffset(0),
-          aqi: data.current_aqi,
-          category: data.current_category,
-          isHazardous: false,
-        },
-        {
-          dayLabel: dayLabelForOffset(1),
+          dayLabel: dayLabelForOffset(data.based_on_timestamp, 1),
+          offsetLabel: "24 Hours",
           aqi: data.forecast.day_1.predicted_aqi,
           category: data.forecast.day_1.category,
           isHazardous: data.forecast.day_1.is_hazardous,
         },
         {
-          dayLabel: dayLabelForOffset(2),
+          dayLabel: dayLabelForOffset(data.based_on_timestamp, 2),
+          offsetLabel: "48 Hours",
           aqi: data.forecast.day_2.predicted_aqi,
           category: data.forecast.day_2.category,
           isHazardous: data.forecast.day_2.is_hazardous,
         },
         {
-          dayLabel: dayLabelForOffset(3),
+          dayLabel: dayLabelForOffset(data.based_on_timestamp, 3),
+          offsetLabel: "72 Hours",
           aqi: data.forecast.day_3.predicted_aqi,
           category: data.forecast.day_3.category,
           isHazardous: data.forecast.day_3.is_hazardous,

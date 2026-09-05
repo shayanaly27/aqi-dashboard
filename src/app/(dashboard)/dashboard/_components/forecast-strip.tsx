@@ -32,7 +32,7 @@ export interface ForecastPoint {
 }
 
 interface ForecastStripProps {
-  points: ForecastPoint[]; // expects exactly 3: the forecast days (no "Today")
+  points: ForecastPoint[]; // expects exactly 3 forecast days
 }
 
 const CATEGORY_LABEL: Record<string, string> = {
