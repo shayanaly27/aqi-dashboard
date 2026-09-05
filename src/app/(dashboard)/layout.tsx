@@ -17,7 +17,7 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
           onRefresh={refresh}
           refreshing={refreshing}
         />
-        <main className="mx-auto max-w-[1400px] space-y-5 px-4 py-6 sm:px-6 lg:px-4">
+        <main className="mx-auto max-w-700 space-y-5 px-4 py-6 sm:px-6 lg:px-4">
           {children}
         </main>
       </div>
