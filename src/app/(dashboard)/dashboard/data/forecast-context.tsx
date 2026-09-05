@@ -31,9 +31,22 @@ export interface ForecastResponse {
   };
 }
 
-function dayLabelForOffset(offsetDays: number): string {
-  if (offsetDays === 0) return "Today";
-  return `${offsetDays * 24} Hours`;
+const FORECAST_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  timeZone: "UTC",
+});
+
+function dayLabelForOffset(timestamp: string, offsetDays: number): string {
+  const date = new Date(timestamp);
+  date.setUTCDate(date.getUTCDate() + offsetDays);
+  return FORECAST_DATE_FORMATTER.format(date);
+}
+
+// "+24h" / "+48h" / "+72h" - matches the project's own "hours ahead"
+// framing, shown as a small subtitle under the calendar date.
+function offsetLabelForDays(offsetDays: number): string {
+  return `+${offsetDays * 24}h`;
 }
 
 interface ForecastContextValue {
@@ -106,12 +119,13 @@ export function ForecastProvider({ children }: { children: ReactNode }) {
       ]
     : [];
 
+  // Only the 3 forecast days - "Today" is intentionally omitted here
+  // since the hero panel above already shows the current reading.
   const forecastPoints: ForecastPoint[] = data
     ? [
-        { dayLabel: dayLabelForOffset(0), aqi: data.current_aqi, category: data.current_category, isHazardous: false },
-        { dayLabel: dayLabelForOffset(1), aqi: data.forecast.day_1.predicted_aqi, category: data.forecast.day_1.category, isHazardous: data.forecast.day_1.is_hazardous },
-        { dayLabel: dayLabelForOffset(2), aqi: data.forecast.day_2.predicted_aqi, category: data.forecast.day_2.category, isHazardous: data.forecast.day_2.is_hazardous },
-        { dayLabel: dayLabelForOffset(3), aqi: data.forecast.day_3.predicted_aqi, category: data.forecast.day_3.category, isHazardous: data.forecast.day_3.is_hazardous },
+        { dayLabel: dayLabelForOffset(data.based_on_timestamp, 1), offsetLabel: offsetLabelForDays(1), aqi: data.forecast.day_1.predicted_aqi, category: data.forecast.day_1.category, isHazardous: data.forecast.day_1.is_hazardous },
+        { dayLabel: dayLabelForOffset(data.based_on_timestamp, 2), offsetLabel: offsetLabelForDays(2), aqi: data.forecast.day_2.predicted_aqi, category: data.forecast.day_2.category, isHazardous: data.forecast.day_2.is_hazardous },
+        { dayLabel: dayLabelForOffset(data.based_on_timestamp, 3), offsetLabel: offsetLabelForDays(3), aqi: data.forecast.day_3.predicted_aqi, category: data.forecast.day_3.category, isHazardous: data.forecast.day_3.is_hazardous },
       ]
     : [];
 
